@@ -10,7 +10,7 @@
 - [x] 数据库配置（MySQL + GORM）
 - [x] 数据模型定义（User, Diary）
 - [x] 自动建表和迁移
-- [ ] Redis 集成
+- [x] Redis 集成
 - [ ] 日志配置优化
 - [ ] Docker 容器化
 

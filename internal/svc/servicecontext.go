@@ -7,6 +7,7 @@ import (
 	"yusi-backend/internal/database"
 	"yusi-backend/internal/middleware"
 
+	"github.com/redis/go-redis/v9"
 	"github.com/zeromicro/go-zero/rest"
 	"gorm.io/gorm"
 )
@@ -15,7 +16,7 @@ type ServiceContext struct {
 	Config config.Config
 	Auth   rest.Middleware
 	DB     *gorm.DB
-	// Redis  *redis.Client
+	Redis  *redis.Client
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -25,9 +26,16 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		log.Fatalf("初始化数据库失败: %v", err)
 	}
 
+	// 初始化 Redis
+	rdb, err := database.InitRedis(c.Redis.Host, c.Redis.Pass)
+	if err != nil {
+		log.Fatalf("初始化 Redis 失败: %v", err)
+	}
+
 	return &ServiceContext{
 		Config: c,
 		Auth:   middleware.NewAuthMiddleware(c.Auth.AccessSecret).Handle,
 		DB:     db,
+		Redis:  rdb,
 	}
 }
