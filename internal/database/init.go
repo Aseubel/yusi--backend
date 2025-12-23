@@ -74,6 +74,9 @@ func autoMigrate(db *gorm.DB) error {
 	models := []interface{}{
 		&model.User{},
 		&model.Diary{},
+		&model.SituationRoom{},
+		&model.RoomMember{},
+		&model.RoomNarrative{},
 	}
 
 	for _, m := range models {

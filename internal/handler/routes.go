@@ -10,6 +10,7 @@ import (
 	diary "yusi-backend/internal/handler/diary"
 	room "yusi-backend/internal/handler/room"
 	user "yusi-backend/internal/handler/user"
+	ws "yusi-backend/internal/handler/websocket"
 	"yusi-backend/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
@@ -146,5 +147,18 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			}...,
 		),
 		rest.WithPrefix("/api/user"),
+	)
+
+	// WebSocket 路由（不需要认证，因为会在连接时通过参数验证）
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				// WebSocket 连接
+				Method:  http.MethodGet,
+				Path:    "/ws/:roomCode",
+				Handler: ws.WebSocketHandler(serverCtx),
+			},
+		},
+		rest.WithPrefix("/api"),
 	)
 }

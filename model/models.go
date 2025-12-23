@@ -33,3 +33,44 @@ type Diary struct {
 func (Diary) TableName() string {
 	return "diary"
 }
+
+// SituationRoom 情景房间模型
+type SituationRoom struct {
+	Code       string    `gorm:"column:code;primaryKey" json:"code"`
+	OwnerId    string    `gorm:"column:owner_id;index" json:"ownerId"`
+	MaxMembers int       `gorm:"column:max_members" json:"maxMembers"`
+	Status     string    `gorm:"column:status;default:'waiting'" json:"status"` // waiting, running, finished
+	ScenarioId string    `gorm:"column:scenario_id" json:"scenarioId"`
+	CreateTime time.Time `gorm:"column:create_time;autoCreateTime" json:"createTime"`
+	UpdateTime time.Time `gorm:"column:update_time;autoUpdateTime" json:"updateTime"`
+}
+
+func (SituationRoom) TableName() string {
+	return "situation_room"
+}
+
+// RoomMember 房间成员模型
+type RoomMember struct {
+	ID         uint      `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
+	Code       string    `gorm:"column:code;index" json:"code"`
+	UserId     string    `gorm:"column:user_id;index" json:"userId"`
+	JoinTime   time.Time `gorm:"column:join_time;autoCreateTime" json:"joinTime"`
+	CreateTime time.Time `gorm:"column:create_time;autoCreateTime" json:"createTime"`
+}
+
+func (RoomMember) TableName() string {
+	return "room_member"
+}
+
+// RoomNarrative 房间叙述模型
+type RoomNarrative struct {
+	ID         uint      `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
+	Code       string    `gorm:"column:code;index" json:"code"`
+	UserId     string    `gorm:"column:user_id;index" json:"userId"`
+	Narrative  string    `gorm:"column:narrative;type:text" json:"narrative"`
+	CreateTime time.Time `gorm:"column:create_time;autoCreateTime" json:"createTime"`
+}
+
+func (RoomNarrative) TableName() string {
+	return "room_narrative"
+}
